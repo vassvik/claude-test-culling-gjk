@@ -4,6 +4,34 @@ This document captures the full iterative process of understanding a geometry cu
 
 ---
 
+## Preface: Why This Document Exists
+
+This conversation was intentionally structured as an exercise. The user already knew the answers and interpretations — they wanted to see what Claude could infer and deduce from limited information (a screenshot with labels), with occasional nudges in the right direction when things went sideways.
+
+This approach serves two purposes:
+
+### 1. Documentation Through Re-Derivation
+
+When you want to document something you've already built or understood, having an AI work toward the same conclusions — and correcting it along the way — produces documentation that is:
+- **Precise**: Errors get caught and corrected explicitly
+- **Comprehensive**: You have to articulate *why* things are the way they are, not just *what* they are
+
+The iterative refinement forces clarity. Ambiguities that seemed obvious to the original author get surfaced when someone else (or an AI) misinterprets them.
+
+The final result of this process is the [README.md](README.md) — a precise, comprehensive document that emerged from the back-and-forth corrections in this conversation.
+
+### 2. Pedagogical Value (With Caveats)
+
+Someone who *doesn't* know the answers could have a similar conversation to learn about a concept. The dialogue format can be more engaging than static documentation.
+
+**The risk**: A learner can't catch when the AI goes sideways. They might walk away with an error (like the "half-diagonal" mistake in this transcript) lodged in their understanding. This asymmetry matters — the expert-guided conversation has a built-in error-correction loop; the learner-driven conversation doesn't.
+
+**The takeaway**: When using AI to explore unfamiliar concepts, the quality of the output depends heavily on the input being unambiguous. The more precisely you can frame the question or provide context, the less likely things go slightly wrong in ways you won't notice.
+
+This transcript documents not just the final understanding, but the failure modes along the way — which is arguably more valuable for learning than a clean exposition would be.
+
+---
+
 ## Initial Screenshot and Analysis
 
 **User** shared a Desmos screenshot titled "Geometry Culling GJK-ish" showing a unit square with inner/outer circular bounds and a blue "uncertain" region.
