@@ -89,6 +89,49 @@ For polytopes, the cost scales with vertex count (one dot product per vertex, or
 
 The algorithm structure remains identical regardless of shape — only the support function implementation and diameter constant change.
 
+## Hierarchical Application
+
+Consider a concrete problem: computing the closest distance from 100,000 particles to each voxel in a 32×32×32 grid.
+
+**Naive approach**: 32³ × 100k = ~3.3 billion distance calculations.
+
+**Hierarchical approach**: Apply the culling technique at the coarsest level first, then refine.
+
+### Coarse Culling
+
+Treat the entire 32×32×32 grid as a single bounding cube:
+
+1. Find the closest particle to the cube's center
+2. Cull all particles outside |C| + (cube diagonal)
+3. Most of the 100k particles are eliminated in this single O(particles) pass
+4. Test survivors against the 8 corners (support functions) to cull further
+
+Only the surviving particles — likely a small fraction of the original 100k — proceed to per-voxel testing.
+
+### Recursive Refinement
+
+The chunk size is arbitrary. Instead of jumping straight to per-voxel, subdivide recursively:
+
+1. **128³ chunks**: Cull particles against each chunk's bounding volume
+2. **32³ sub-chunks**: For survivors, subdivide and cull again
+3. **8³ sub-sub-chunks**: Repeat
+4. **Per-voxel**: Final pass on the small surviving set
+
+A particle culled at the 128³ level is never tested at any finer level within that region. The culling cascades — each level reduces the working set before it fans out to the next subdivision.
+
+### Complexity
+
+For particles spread across a large world with the grid covering a small region:
+
+- **Coarse culling**: O(particles) — one pass, most eliminated
+- **Per-voxel pass**: O(voxels) × (small constant based on local particle density)
+
+The two dimensions decouple. Instead of O(particles × voxels), the problem becomes two linear passes. The constant factor in the per-voxel pass depends on how many particles survive into the grid's bounding volume — typically a tiny fraction of the total.
+
+### Sparse Grids
+
+The 32×32×32 grid could itself be one tile in a much larger sparse structure. Tiles far from any particles are trivially culled at the coarsest level (zero survivors, no per-voxel work). The technique slots naturally into sparse voxel representations — it's the filter you run before committing to per-voxel computation within any tile.
+
 ## Caveats
 
 1. **Shape-dependent bounds**: The √2 factor is specific to a unit square. Other convex shapes would require their own maximum extent calculation (e.g., diameter of a bounding circle, or maximum distance between any two points on the shape).
