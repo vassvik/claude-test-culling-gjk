@@ -2,6 +2,8 @@
 
 This document describes a conservative culling technique for spatial queries, visualized using a unit square as the reference shape.
 
+**Interactive version**: [Desmos geometry link](https://www.desmos.com/geometry/089j0ubebw) — drag point C to explore how the bounds change.
+
 ## Setup
 
 ![Culling visualization with correct √2 bound](images/culling-correct.png)
