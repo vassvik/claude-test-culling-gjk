@@ -4,6 +4,8 @@ This document describes a conservative culling technique for spatial queries, vi
 
 **Interactive version**: [Desmos geometry link](https://www.desmos.com/geometry/089j0ubebw) — drag point C to explore how the bounds change.
 
+**How this document came to be**: This README emerged from an iterative conversation where concepts were inferred from the visualization, mistakes were corrected, and understanding was refined step by step. See [conversation-transcript.md](conversation-transcript.md) for the full dialogue, including errors and corrections — useful for understanding not just *what* the technique is, but *why* certain details matter.
+
 ## Setup
 
 ![Culling visualization with correct √2 bound](images/culling-correct.png)
