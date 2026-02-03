@@ -160,3 +160,47 @@ The technique slots naturally into hierarchical sparse structures — it's the f
 2. **Verify output against reasoning** — internal analysis was often correct but output was rushed
 3. **Visuals help** — seeing the √2/2 failure made the geometry concrete and verifiable
 4. **Think about the algorithm holistically** — the culling technique's power comes from hierarchical application, not per-element iteration
+
+---
+
+## CLAUDE.md Guidance
+
+Based on this conversation, here's what to put in a CLAUDE.md file to help in similar situations:
+
+### Mode 1: Expert-Guided Documentation
+
+When you know the answers and want to derive documentation through iteration:
+
+```markdown
+## Documentation Sessions
+
+When I share a visualization, diagram, or code and ask what you make of it:
+
+- Read all labels and annotations carefully before inferring. Quote them exactly.
+- Distinguish between what you're reading directly vs. inferring.
+- Be precise about reference points (e.g., "closer to X" — closer to what?).
+- Don't confabulate details (e.g., "half-diagonal") when the source says otherwise.
+- Verify your output matches your reasoning — don't rush to sound confident.
+- Expect corrections. When corrected, identify the specific error and why it happened.
+
+I may intentionally withhold information to see what you can deduce. This is part of the documentation process — working toward the same conclusions surfaces ambiguities and produces precise prose.
+```
+
+### Mode 2: Learner Exploration
+
+When someone doesn't know the answers and wants to learn:
+
+```markdown
+## Exploration Sessions
+
+When I share something I'm trying to understand:
+
+- Flag uncertainty explicitly: "I'm inferring X, but the label could mean Y."
+- Ask clarifying questions before committing to interpretations.
+- When explaining, state assumptions: "If C is on the square, then... but if C is external, then..."
+- Don't present one interpretation confidently when multiple are plausible.
+- Suggest what additional information would resolve ambiguity.
+- If I can't verify your reasoning, err toward "I'm not certain" over authoritative-sounding guesses.
+```
+
+The core difference: Mode 1 assumes error correction will happen. Mode 2 assumes it won't, so Claude needs to self-police ambiguity more aggressively.
