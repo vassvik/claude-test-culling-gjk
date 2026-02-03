@@ -44,6 +44,51 @@ When using the half-diagonal (√2/2 ≈ 0.707), the outer circle becomes too sm
 
 The full diagonal √2 accounts for the maximum extent of the square — the distance from one corner to the opposite corner. This guarantees that any object entirely outside the outer circle truly cannot contain a point closer to the center than C.
 
+## Multi-Level Filtering
+
+The circles are the coarsest bounds — the first pass in a hierarchy of increasingly tight (and expensive) tests:
+
+| Level | Test | Cost | What it filters |
+|-------|------|------|-----------------|
+| 1 | Outer circle (|C| + diagonal) | Very cheap (one distance) | Definitely-too-far objects |
+| 2 | Blue region boundary (support functions) | Cheap (few dot products) | Objects outside the tighter bound |
+| 3 | Full GJK / exact test | Expensive | Only for objects in the uncertain region |
+
+Most objects are filtered at level 1. Survivors face level 2. Only objects that pass both require expensive exact computation.
+
+## Generalization to Other Convex Shapes
+
+This technique applies to any convex shape, not just squares. The components adapt as follows:
+
+### Outer Circle Radius
+
+The outer radius is |C| + d, where d is the **diameter** of the shape (maximum distance between any two points), not the radius from center to boundary.
+
+| Shape | Diameter (d) |
+|-------|--------------|
+| Unit square (vertices at ±0.5) | √2 |
+| Circle of radius r | 2r |
+| Rectangle with dimensions a × b | √(a² + b²) |
+| Regular polygon | 2 × circumradius |
+| Arbitrary convex shape | max distance between any two points |
+
+Using the radius instead of the diameter would underestimate the bound and cause incorrect culling, as demonstrated in the √2 vs √2/2 comparison above.
+
+### Support Functions
+
+The blue region computation relies on support functions — a standard primitive for convex shapes that returns the farthest point in a given direction:
+
+| Shape | Support function for direction **d** |
+|-------|--------------------------------------|
+| Convex polygon | Vertex with maximum dot product against **d** |
+| Sphere (center **c**, radius r) | **c** + r × normalize(**d**) |
+| Capsule | Endcap center closest to **d**, plus radius × normalize(**d**) |
+| Ellipsoid | Closed-form involving the axes |
+
+For polytopes, the cost scales with vertex count (one dot product per vertex, or faster with hill-climbing for high vertex counts). For smooth shapes like spheres and ellipsoids, support is O(1).
+
+The algorithm structure remains identical regardless of shape — only the support function implementation and diameter constant change.
+
 ## Caveats
 
 1. **Shape-dependent bounds**: The √2 factor is specific to a unit square. Other convex shapes would require their own maximum extent calculation (e.g., diameter of a bounding circle, or maximum distance between any two points on the shape).
